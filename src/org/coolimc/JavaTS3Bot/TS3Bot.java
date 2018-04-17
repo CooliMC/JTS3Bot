@@ -17,6 +17,7 @@ import org.coolimc.JavaTS3Bot.Events.TS3BotClientLeaveEvent;
 import org.coolimc.JavaTS3Bot.Events.TS3BotClientMicrophoneToggleEvent;
 import org.coolimc.JavaTS3Bot.Events.TS3BotClientMovedEvent;
 import org.coolimc.JavaTS3Bot.Events.TS3BotClientNicknameChangedEvent;
+import org.coolimc.JavaTS3Bot.Events.TS3BotClientRecordToggleEvent;
 import org.coolimc.JavaTS3Bot.Events.TS3BotClientSpeakerToggleEvent;
 import org.coolimc.JavaTS3Bot.Events.TS3BotClientTimeoutEvent;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnBotConnectHandler;
@@ -40,6 +41,7 @@ import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnClientLeaveHandler;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnClientMicrophoneToggleHandler;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnClientMovedHandler;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnClientNicknameChangedHandler;
+import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnClientRecordToggleHandler;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnClientSpeakerToggleHandler;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnClientTimeoutHandler;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnPrivilegeKeyUsedHandler;
@@ -115,6 +117,7 @@ public final class TS3Bot
 	private final List<TS3BotOnClientMicrophoneToggleHandler> ts3BotOnClientMicrophoneToggleHandler;
 	private final List<TS3BotOnClientMovedHandler> ts3BotOnClientMovedHandler;
 	private final List<TS3BotOnClientNicknameChangedHandler> ts3BotOnClientNicknameChangedHandler;
+	private final List<TS3BotOnClientRecordToggleHandler> ts3BotOnClientRecordToggleHandler;
 	private final List<TS3BotOnClientSpeakerToggleHandler> ts3BotOnClientSpeakerToggleHandler;
 	private final List<TS3BotOnClientTimeoutHandler> ts3BotOnClientTimeoutHandler;
 	private final List<TS3BotOnPrivilegeKeyUsedHandler> ts3BotOnPrivilegeKeyUsedHandler;
@@ -177,6 +180,7 @@ public final class TS3Bot
 		this.ts3BotOnClientMicrophoneToggleHandler = new ArrayList<TS3BotOnClientMicrophoneToggleHandler>();
 		this.ts3BotOnClientMovedHandler = new ArrayList<TS3BotOnClientMovedHandler>();
 		this.ts3BotOnClientNicknameChangedHandler = new ArrayList<TS3BotOnClientNicknameChangedHandler>();
+		this.ts3BotOnClientRecordToggleHandler = new ArrayList<TS3BotOnClientRecordToggleHandler>();
 		this.ts3BotOnClientSpeakerToggleHandler = new ArrayList<TS3BotOnClientSpeakerToggleHandler>();
 		this.ts3BotOnClientTimeoutHandler = new ArrayList<TS3BotOnClientTimeoutHandler>();
 		this.ts3BotOnPrivilegeKeyUsedHandler = new ArrayList<TS3BotOnPrivilegeKeyUsedHandler>();
@@ -458,8 +462,11 @@ public final class TS3Bot
 	private final boolean doExtendedEventHandlersExist()
 	{
 		return (
+			!this.ts3BotOnClientAwayToggleHandler.isEmpty() ||
+			!this.ts3BotOnClientMicrophoneToggleHandler.isEmpty() ||
 			!this.ts3BotOnClientNicknameChangedHandler.isEmpty() ||
-			!this.ts3BotOnClientAwayToggleHandler.isEmpty()
+			!this.ts3BotOnClientRecordToggleHandler.isEmpty() ||
+			!this.ts3BotOnClientSpeakerToggleHandler.isEmpty()
 		);
 				
 	}
@@ -897,6 +904,20 @@ public final class TS3Bot
 		}.start();
 	}
 	
+	private final void fireOnClientRecordToggle(TS3BotClientRecordToggleEvent e)
+	{
+		if(this.ts3BotOnClientRecordToggleHandler.isEmpty()) return;
+		
+		new Thread() 
+		{
+			public void run()
+			{
+				for(TS3BotOnClientRecordToggleHandler tempObj : ts3BotOnClientRecordToggleHandler)
+					tempObj.fireEvent(e);
+			}
+		}.start();
+	}
+	
 	private final void fireOnClientSpeakerToggle(TS3BotClientSpeakerToggleEvent e)
 	{
 		if(this.ts3BotOnClientSpeakerToggleHandler.isEmpty()) return;
@@ -1139,6 +1160,15 @@ public final class TS3Bot
 		}
 	}
 	
+	public final void addTS3BotOnClientRecordToggleHandler(TS3BotOnClientRecordToggleHandler e)
+	{
+		if(e != null)
+		{
+			this.ts3BotOnClientRecordToggleHandler.add(e);
+			this.checkExtendedEventsHandler();
+		}
+	}
+	
 	public final void addTS3BotOnClientSpeakerToggleHandler(TS3BotOnClientSpeakerToggleHandler e)
 	{
 		if(e != null)
@@ -1352,6 +1382,15 @@ public final class TS3Bot
 		}
 	}
 	
+	public final void removeTS3BotOnClientRecordToggleHandler(TS3BotOnClientRecordToggleHandler e)
+	{
+		if(e != null)
+		{
+			this.ts3BotOnClientRecordToggleHandler.remove(e);
+			this.checkExtendedEventsHandler();
+		}
+	}
+	
 	public final void removeTS3BotOnClientSpeakerToggleHandler(TS3BotOnClientSpeakerToggleHandler e)
 	{
 		if(e != null)
@@ -1505,6 +1544,12 @@ public final class TS3Bot
 		this.checkExtendedEventsHandler();
 	}
 	
+	public final void removeAllTS3BotOnClientRecordToggleHandler()
+	{
+		this.ts3BotOnClientRecordToggleHandler.clear();
+		this.checkExtendedEventsHandler();
+	}
+	
 	public final void removeAllTS3BotOnClientSpeakerToggleHandler()
 	{
 		this.ts3BotOnClientSpeakerToggleHandler.clear();
@@ -1631,6 +1676,20 @@ public final class TS3Bot
 							));
 							
 							cachedClient.setClientSpeakerMuted(tempClient.isOutputMuted());
+						}
+						
+						//CheckRecord
+						if(!ts3BotOnClientRecordToggleHandler.isEmpty() && (tempClient.isRecording() != cachedClient.isClientRecording()))
+						{
+							fireOnClientRecordToggle(new TS3BotClientRecordToggleEvent(
+								tempClient.getId(),
+								tempClient.getDatabaseId(),
+								tempClient.getUniqueIdentifier(),
+								tempClient.getNickname(),
+								tempClient.isRecording()
+							));
+							
+							cachedClient.setClientRecording(tempClient.isRecording());
 						}
 					}
 				}

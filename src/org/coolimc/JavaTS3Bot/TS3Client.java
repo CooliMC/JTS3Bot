@@ -5,7 +5,7 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 public class TS3Client
 {
 	public static final int DEFAULT_LAST_CHANNEL_ID = -1;
-	public static final TS3Client SERVER_OBJ = new TS3Client(0, -1, "server", -1, false, false, false, "server");
+	public static final TS3Client SERVER_OBJ = new TS3Client(0, -1, "server", -1, false, false, false, false, "server");
 	
 	private final String client_uId;
 	private final int client_dbId;
@@ -17,6 +17,7 @@ public class TS3Client
 	private boolean client_isAway;
 	private boolean client_isMicrophoneMuted;
 	private boolean client_isSpeakerMuted;
+	private boolean client_isRecording;
 	private String client_nickname;
 	
 	private boolean client_needCheck;
@@ -31,11 +32,12 @@ public class TS3Client
 			client.isAway(),
 			client.isInputMuted(),
 			client.isOutputMuted(),
+			client.isRecording(),
 			client.getNickname()
 		);
 	}
 	
-	TS3Client(int id, int dbId, String uId, int cId, boolean ciA, boolean cMm, boolean cSm, String cN)
+	TS3Client(int id, int dbId, String uId, int cId, boolean ciA, boolean cMm, boolean cSm, boolean cR, String cN)
 	{
 		this.client_id = id;
 		this.client_dbId = dbId;
@@ -47,6 +49,7 @@ public class TS3Client
 		this.client_isAway = ciA;
 		this.client_isMicrophoneMuted = cMm;
 		this.client_isSpeakerMuted = cSm;
+		this.client_isRecording = cR;
 		this.client_nickname = cN;
 		
 		this.client_needCheck = false;
@@ -116,6 +119,16 @@ public class TS3Client
 	final void setClientSpeakerMuted(boolean cSm)
 	{
 		this.client_isSpeakerMuted = cSm;
+	}
+	
+	final boolean isClientRecording()
+	{
+		return this.client_isRecording;
+	}
+	
+	final void setClientRecording(boolean cR)
+	{
+		this.client_isRecording = cR;
 	}
 	
 	final String getClientNickname()
