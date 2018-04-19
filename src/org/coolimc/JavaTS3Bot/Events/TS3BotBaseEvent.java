@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.github.theholywaffle.teamspeak3.api.event.BaseEvent;
-import com.github.theholywaffle.teamspeak3.api.event.TS3Listener;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.BaseEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.TS3Listener;
 
 abstract class TS3BotBaseEvent extends BaseEvent
 {

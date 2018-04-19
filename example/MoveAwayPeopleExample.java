@@ -1,9 +1,8 @@
 import org.coolimc.JavaTS3Bot.TS3Bot;
 import org.coolimc.JavaTS3Bot.Events.TS3BotClientAwayToggleEvent;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnClientAwayToggleHandler;
-
-import com.github.theholywaffle.teamspeak3.TS3Api;
-import com.github.theholywaffle.teamspeak3.api.TextMessageTargetMode;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.TS3Api;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.TextMessageTargetMode;
 
 /*
  * A simple example for a bot that texts clients

@@ -1,6 +1,5 @@
 package org.coolimc.JavaTS3Bot.Events;
 
-
 public class TS3BotClientAwayToggleEvent extends TS3BotBaseEvent
 {
 	private final static String EVENT_VALUE_REASON_ID = new String("0");

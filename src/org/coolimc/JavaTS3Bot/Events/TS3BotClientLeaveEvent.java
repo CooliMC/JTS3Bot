@@ -1,7 +1,7 @@
 package org.coolimc.JavaTS3Bot.Events;
 
 import org.coolimc.JavaTS3Bot.TS3Client;
-import com.github.theholywaffle.teamspeak3.api.event.ClientLeaveEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ClientLeaveEvent;
 
 public class TS3BotClientLeaveEvent extends ClientLeaveEvent
 {

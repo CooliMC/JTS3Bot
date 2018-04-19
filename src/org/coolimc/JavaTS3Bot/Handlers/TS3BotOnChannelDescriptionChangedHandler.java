@@ -1,6 +1,6 @@
 package org.coolimc.JavaTS3Bot.Handlers;
 
-import com.github.theholywaffle.teamspeak3.api.event.ChannelDescriptionEditedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ChannelDescriptionEditedEvent;
 
 public interface TS3BotOnChannelDescriptionChangedHandler
 {

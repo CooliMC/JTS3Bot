@@ -25,7 +25,7 @@ public class TS3BotClientMicrophoneToggleEvent extends TS3BotBaseEvent
 		}));
 	}
 	
-	public boolean getInvokerMicrophone()
+	public boolean getInvokerMicrophoneMuted()
 	{
 		return getBoolean(TS3BotClientMicrophoneToggleEvent.EVENT_VALUE_KEY_INVOKER_MICROPHONEMUTED);
 	}

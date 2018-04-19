@@ -1,6 +1,6 @@
 package org.coolimc.JavaTS3Bot.Handlers;
 
-import com.github.theholywaffle.teamspeak3.TS3Query;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.TS3Query;
 
 public interface TS3BotOnBotConnectHandler
 {

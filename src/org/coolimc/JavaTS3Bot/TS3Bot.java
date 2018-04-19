@@ -47,28 +47,27 @@ import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnClientTimeoutHandler;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnPrivilegeKeyUsedHandler;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnServerEditHandler;
 import org.coolimc.JavaTS3Bot.Handlers.TS3BotOnTextMessageHandler;
-
-import com.github.theholywaffle.teamspeak3.TS3Api;
-import com.github.theholywaffle.teamspeak3.TS3ApiAsync;
-import com.github.theholywaffle.teamspeak3.TS3Config;
-import com.github.theholywaffle.teamspeak3.TS3Query;
-import com.github.theholywaffle.teamspeak3.api.event.ChannelCreateEvent;
-import com.github.theholywaffle.teamspeak3.api.event.ChannelDeletedEvent;
-import com.github.theholywaffle.teamspeak3.api.event.ChannelDescriptionEditedEvent;
-import com.github.theholywaffle.teamspeak3.api.event.ChannelEditedEvent;
-import com.github.theholywaffle.teamspeak3.api.event.ChannelMovedEvent;
-import com.github.theholywaffle.teamspeak3.api.event.ChannelPasswordChangedEvent;
-import com.github.theholywaffle.teamspeak3.api.event.ClientJoinEvent;
-import com.github.theholywaffle.teamspeak3.api.event.ClientLeaveEvent;
-import com.github.theholywaffle.teamspeak3.api.event.ClientMovedEvent;
-import com.github.theholywaffle.teamspeak3.api.event.PrivilegeKeyUsedEvent;
-import com.github.theholywaffle.teamspeak3.api.event.ServerEditedEvent;
-import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
-import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
-import com.github.theholywaffle.teamspeak3.api.reconnect.ConnectionHandler;
-import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
-import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
-import com.github.theholywaffle.teamspeak3.api.wrapper.ClientInfo;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.TS3Api;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.TS3ApiAsync;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.TS3Config;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.TS3Query;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ChannelCreateEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ChannelDeletedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ChannelDescriptionEditedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ChannelEditedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ChannelMovedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ChannelPasswordChangedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ClientJoinEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ClientLeaveEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ClientMovedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.PrivilegeKeyUsedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.ServerEditedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.TS3EventAdapter;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.TextMessageEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Reconnect.ConnectionHandler;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Reconnect.ReconnectStrategy;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Wrapper.Client;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Wrapper.ClientInfo;
 
 public final class TS3Bot
 {
@@ -278,15 +277,19 @@ public final class TS3Bot
 		if(api == null)
 			throw new IllegalArgumentException("Can't connect to server, wrong hostname or queryport.");
 		
-		if(!api.login(this.bot_username, this.bot_password))
+		try { api.login(this.bot_username, this.bot_password); } catch (Exception e) {
 			throw new IllegalArgumentException("Can't log into the severquery account, wrong username or password.");
+		}
 			
-		if(!api.selectVirtualServerById(this.bot_virtualServerId))
+		try { api.selectVirtualServerById(this.bot_virtualServerId); } catch (Exception e) {
 			throw new IllegalArgumentException("No existing virtuel server with the id " + this.bot_virtualServerId);
+		}
 
-		if(!api.setNickname(this.bot_nickName))
-			if(!api.setNickname("TS3Bot_" + this.toString()))
+		try { api.setNickname(this.bot_nickName); } catch (Exception e1) {
+			try { api.setNickname("TS3Bot_" + this.toString()); } catch (Exception e2) {
 				throw new IllegalArgumentException("Can't set the nickname to " + this.bot_nickName);
+			}
+		}
 		
 		return api;
 	}

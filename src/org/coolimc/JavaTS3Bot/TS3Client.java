@@ -1,6 +1,6 @@
 package org.coolimc.JavaTS3Bot;
 
-import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Wrapper.Client;
 
 public class TS3Client
 {

@@ -1,6 +1,6 @@
 package org.coolimc.JavaTS3Bot.Handlers;
 
-import com.github.theholywaffle.teamspeak3.api.event.PrivilegeKeyUsedEvent;
+import org.coolimc.JavaTS3Bot.Libary.HolyWaffleTS3Api.Main.Api.Event.PrivilegeKeyUsedEvent;
 
 public interface TS3BotOnPrivilegeKeyUsedHandler
 {

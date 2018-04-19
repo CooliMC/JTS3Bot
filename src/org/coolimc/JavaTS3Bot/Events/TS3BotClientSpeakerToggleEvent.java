@@ -25,7 +25,7 @@ public class TS3BotClientSpeakerToggleEvent extends TS3BotBaseEvent
 		}));
 	}
 	
-	public boolean getInvokerSpeaker()
+	public boolean getInvokerSpeakerMuted()
 	{
 		return getBoolean(TS3BotClientSpeakerToggleEvent.EVENT_VALUE_KEY_INVOKER_SPEAKERMUTED);
 	}
